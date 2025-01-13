@@ -1,3 +1,4 @@
+# A user of the website/service
 class User < ApplicationRecord
 
   enum role: [:admin, :organization]
