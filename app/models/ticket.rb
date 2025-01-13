@@ -1,3 +1,4 @@
+# The ticket is a disaster reported by the person with a name, phone number, region, resource category, and a brief description of the disaster.
 class Ticket < ApplicationRecord
 
   belongs_to :region
