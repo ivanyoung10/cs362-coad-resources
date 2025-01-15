@@ -32,5 +32,18 @@ RSpec.describe Ticket, type: :model do
     expect(tick).to respond_to(:name)
   end
 
+  it "belongs to a region" do
+    should belong_to(:region)
+  end
+
+  it "belongs to a resource category" do 
+    should belong_to(:resource_category)
+  end
+
+  it "belongs to a organization" do 
+    should belong_to(:organization).optional
+  end
+
+
 
 end
