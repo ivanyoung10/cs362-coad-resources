@@ -40,8 +40,12 @@ RSpec.describe User, type: :model do
     expect(usr).to respond_to(:unconfirmed_email)
   end
 
-  it "role" do
+  it "has a role" do
     expect(usr).to respond_to(:role)
+  end
+
+  it "belongs to a organization" do
+    should belong_to(:organization).optional
   end
 
 end
