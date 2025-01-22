@@ -29,10 +29,6 @@ RSpec.describe Ticket, type: :model do
       expect(ticket).to respond_to(:closed_at)
     end
 
-    it "has a name" do
-      expect(ticket).to respond_to(:name)
-    end
-
     it "belongs to a region" do
       should belong_to(:region)
     end
@@ -63,6 +59,25 @@ RSpec.describe Ticket, type: :model do
       expect(ticket.to_s).to eq "Ticket 123"
     end
   end
+  
+  describe "scope tests" do
+    it "scopes closed tickets" do 
+      region = Region.create!(name: "region1")
+      resource = ResourceCategory.create!(name: "resource1")
 
+      ticket = Ticket.create!(
+        name: "ticket",
+        phone: "+1-555-555-1212",
+        region_id: region.id,
+        resource_category_id: resource.id,
+        closed: true
+      )
+
+      expect(Ticket.closed).to include(ticket)
+      expect(Ticket.open).to_not include(ticket)
+  
+    end
+
+  end
 
 end
