@@ -1,4 +1,5 @@
 require 'rails_helper'
+#Mine
 
 RSpec.describe Ticket, type: :model do
 
@@ -47,9 +48,29 @@ RSpec.describe Ticket, type: :model do
       expect(ticket).to validate_presence_of(:name)
     end
 
+    it "validates presence of phone" do
+      expect(ticket).to validate_presence_of(:phone)
+    end
+
+    it "validates presence of region id" do
+      expect(ticket).to validate_presence_of(:region_id)
+    end
+
+    it "validates presence of resource category id" do
+      expect(ticket).to validate_presence_of(:resource_category_id)
+    end
+
     it "validates name length" do
       expect(ticket).to validate_length_of(:name).is_at_most(255)
       expect(ticket).to validate_length_of(:name).is_at_least(1)
+    end
+
+    it "validates description length" do
+      expect(ticket).to validate_length_of(:description).is_at_most(1020)
+    end
+
+    it "validates valid phone" do
+      #!! TODO
     end
 
   end
@@ -57,6 +78,16 @@ RSpec.describe Ticket, type: :model do
   describe "member function tests" do
     it "converts to string" do
       expect(ticket.to_s).to eq "Ticket 123"
+    end
+    
+    it "checks if open" do
+      expect(ticket.open?).to_not eq :closed
+      #I think this is right?
+    end
+
+    it "checks if captured" do
+       #expect(ticket.captured?).to eq ticket.organization_id
+      # not work
     end
   end
   
@@ -78,6 +109,35 @@ RSpec.describe Ticket, type: :model do
   
     end
 
+    it "scopes organizations tests" do 
+      region = Region.create!(name: "region1")
+      resource = ResourceCategory.create!(name: "resource1")
+      organization = Organization.create!(
+        name: "organization1", 
+        email: "email@gmail.com", 
+        phone: "+1-111-111-1111",
+        primary_name: "JS Sdf",
+        secondary_name: "JS dfs",
+        secondary_phone: "+1-222-222-2222"
+        )
+
+      ticket = Ticket.create!(
+        name: "ticket",
+        phone: "+1-555-555-1212",
+        organization_id: organization.id,
+        closed: false,
+        region_id: region.id,
+        resource_category_id: resource.id
+      )
+
+      expect(Ticket.all_organization).to include(ticket)
+      expect(Ticket.organization(organization.id)).to include(ticket)
+      expect(Ticket.closed_organization(organization.id)).to_not include(ticket)
+
+    end
+
+  it "scopes region tests"
+    
   end
 
 end
