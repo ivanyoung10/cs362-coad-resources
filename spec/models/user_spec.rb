@@ -2,50 +2,78 @@ require 'rails_helper'
 #Mine
 RSpec.describe User, type: :model do
 
-  let (:usr) {User.new}
+  let (:user) {User.new}
 
   it "exists" do
     User.new
   end
 
-  it "has a email" do
-    expect(usr).to respond_to(:email)
+  describe "attribute tests" do
+
+    it "has a email" do
+      expect(user).to respond_to(:email)
+    end
+
+    it "has a encrypted password" do
+      expect(user).to respond_to(:encrypted_password)
+    end
+
+    it "has a reset password token" do
+      expect(user).to respond_to(:reset_password_token)
+    end
+
+    it "has a reset password sent at" do
+      expect(user).to respond_to(:reset_password_sent_at)
+    end
+
+    it "has a confirmation token" do
+      expect(user).to respond_to(:confirmation_token)
+    end
+
+    it "has a confirmation at" do
+      expect(user).to respond_to(:confirmed_at)
+    end
+
+    it "has a confirmation sent at" do
+      expect(user).to respond_to(:confirmation_sent_at)
+    end
+
+    it "has a unconfirmed email" do
+      expect(user).to respond_to(:unconfirmed_email)
+    end
+
+    it "has a role" do
+      expect(user).to respond_to(:role)
+    end
+
+    it "belongs to a organization" do
+      should belong_to(:organization).optional
+    end
+
   end
 
-  it "has a encrypted password" do
-    expect(usr).to respond_to(:encrypted_password)
+  describe "validation tests" do
+
+    it "validates presence of email" do
+      expect(user).to validate_presence_of(:email)
+    end
+
+    it "validates presence of password" do
+      expect(user).to validate_presence_of(:password)
+    end
+
+    it "validates email length" do
+      expect(user).to validate_length_of(:email).is_at_least(1)
+      expect(user).to validate_length_of(:email).is_at_most(255)
+    end
+
+    it "validates password length" do
+      expect(user).to validate_length_of(:password).is_at_least(7)
+      expect(user).to validate_length_of(:password).is_at_most(255)
+    end
+
   end
 
-  it "has a reset password token" do
-    expect(usr).to respond_to(:reset_password_token)
-  end
-
-  it "has a reset password sent at" do
-    expect(usr).to respond_to(:reset_password_sent_at)
-  end
-
-  it "has a confirmation token" do
-    expect(usr).to respond_to(:confirmation_token)
-  end
-
-  it "has a confirmation at" do
-    expect(usr).to respond_to(:confirmed_at)
-  end
-
-  it "has a confirmation sent at" do
-    expect(usr).to respond_to(:confirmation_sent_at)
-  end
-
-  it "has a unconfirmed email" do
-    expect(usr).to respond_to(:unconfirmed_email)
-  end
-
-  it "has a role" do
-    expect(usr).to respond_to(:role)
-  end
-
-  it "belongs to a organization" do
-    should belong_to(:organization).optional
-  end
+  
 
 end
