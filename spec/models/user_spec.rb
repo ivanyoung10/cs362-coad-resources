@@ -72,8 +72,32 @@ RSpec.describe User, type: :model do
       expect(user).to validate_length_of(:password).is_at_most(255)
     end
 
+    it "validates uniqueness of email" do
+      expect(user).to validate_uniqueness_of(:email).case_insensitive
+    end
+
+    it "validates email formatting" do
+      expect(user).to allow_value("valid@example.com").for(:email)
+      expect(user).not_to allow_value("invalid_email").for(:email)
+      expect(user).not_to allow_value("invalid@.com").for(:email)
+      expect(user).not_to allow_value("invalid@com").for(:email)
+      expect(user).not_to allow_value("@").for(:email)
+    end
+
+
   end
 
-  
+  describe "member function tests" do
+    
+    it "converts to string" do
+      expect(user.to_s).to eq ""
+      #I tink dis right
+    end
+
+    it "sets default role to organization" do
+      expect(user.set_default_role).to eq "organization"
+    end
+
+  end
 
 end

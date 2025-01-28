@@ -152,7 +152,7 @@ RSpec.describe Ticket, type: :model do
     
     end
 
-    it "scopes ressourcec category tests" do
+    it "scopes ressource category tests" do
       region = Region.create!(name: "region345")
   
       resource = ResourceCategory.create(name:"resource345")
