@@ -119,7 +119,7 @@ RSpec.describe Ticket, type: :model do
         primary_name: "JS Sdf",
         secondary_name: "JS dfs",
         secondary_phone: "+1-222-222-2222"
-        )
+      )
 
       ticket = Ticket.create!(
         name: "ticket",
@@ -136,7 +136,7 @@ RSpec.describe Ticket, type: :model do
 
     end
 
-  it "scopes region tests"
+  # it "scopes region tests"
     
   end
 
