@@ -136,8 +136,38 @@ RSpec.describe Ticket, type: :model do
 
     end
 
-  # it "scopes region tests"
+    it "scopes region tests" do
+        region = Region.create!(name: "region345")
     
+        resource = ResourceCategory.create(name:"resource345")
+        ticket = Ticket.create!(
+          name: "ticket",
+          phone: "+1-555-555-1112",
+          closed: false,
+          region_id: region.id,
+          resource_category_id: resource.id
+      )
+    
+        expect(Ticket.region(region.id)).to include(ticket)
+    
+    end
+
+    it "scopes ressource category tests" do
+      region = Region.create!(name: "region345")
+  
+      resource = ResourceCategory.create(name:"resource345")
+      ticket = Ticket.create!(
+        name: "ticket",
+        phone: "+1-555-555-1112",
+        closed: false,
+        region_id: region.id,
+        resource_category_id: resource.id
+    )
+  
+      expect(Ticket.resource_category(resource.id)).to include(ticket)
+  
+  end
+
   end
 
 end

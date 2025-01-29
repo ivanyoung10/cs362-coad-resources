@@ -12,4 +12,10 @@ require 'rails_helper'
 # end
 RSpec.describe TicketsHelper, type: :helper do
 
+    describe "format phone number" do
+      it "adds US code" do
+        expect(format_phone_number("+1-111-111-1111")).to eq("+11111111111")
+      end
+    end
+
 end
