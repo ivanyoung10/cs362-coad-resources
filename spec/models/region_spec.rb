@@ -1,5 +1,4 @@
 require 'rails_helper'
-#Mine
 RSpec.describe Region, type: :model do
 
   let (:region) { Region.new }
@@ -47,9 +46,12 @@ RSpec.describe Region, type: :model do
 
   describe "member function tests" do
     
-    # it "sets name to Unspecified if blank" do
-    #   expect(region.unspecified).to eq "Unspecified"
-    # end
+    it "sets name to Unspecified if blank" do
+      region = Region.find_or_create_by(name: 'Unspecified')
+
+      expect(region.name).to eq 'Unspecified'
+
+    end
 
     it "sets region to string" do 
       region2 = Region.new(name: "Heaver")
