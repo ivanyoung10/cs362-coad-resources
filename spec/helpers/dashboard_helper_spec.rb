@@ -25,19 +25,39 @@ RSpec.describe DashboardHelper, type: :helper do
       phone: "+1-111-111-1111",
       primary_name: "name",
       secondary_name: "namename",
-      secondary_phone: "+1-222-222-2222"
+      secondary_phone: "+1-222-222-2222",
+      status: :submitted
     )
-    unapprovedorg.set_default_status
 
     usersubmitedorg = User.create!(
       email: "admin@gmail.com", 
-      role: :admin, 
+      role: :organization, 
       password: "password",
       organization: unapprovedorg
     )
-    usersubmitedorg.set_default_role
 
     expect(dashboard_for(usersubmitedorg)).to eq "organization_submitted_dashboard"
 
+  end
+
+  it "tests approved org" do
+    approvedorg = Organization.create!(
+      name: "approvedorg", 
+      email: "email@gmail.com", 
+      phone: "+1-111-111-1111",
+      primary_name: "name",
+      secondary_name: "namename",
+      secondary_phone: "+1-222-222-2222",
+      status: :approved
+    )
+
+    userapprovedorg = User.create!(
+      email: "admin@gmail.com", 
+      role: :organization, 
+      password: "password",
+      organization: approvedorg
+    )
+
+    expect(dashboard_for(userapprovedorg)).to eq "organization_approved_dashboard"
   end
 end
