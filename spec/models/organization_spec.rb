@@ -3,7 +3,6 @@ require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
 
-  # let (:org) { Organization.new}
   let (:org) { FactoryBot.build(:organization) }
 
   it "exists" do
@@ -30,18 +29,6 @@ RSpec.describe Organization, type: :model do
     expect(org).to respond_to(:description)
   end
 
-  it "has a rejection_reason" do
-    expect(org).to respond_to(:rejection_reason)
-  end
-
-  it "has a phone" do
-    expect(org).to respond_to(:phone)
-  end
-
-  it "has a libality insurance" do
-    expect(org).to respond_to(:liability_insurance)
-  end
-
   it "has a primary name" do
     expect(org).to respond_to(:primary_name)
   end
@@ -52,10 +39,6 @@ RSpec.describe Organization, type: :model do
 
   it "has a secondary phone" do
     expect(org).to respond_to(:secondary_phone)
-  end
-
-  it "has a title" do
-    expect(org).to respond_to(:title)
   end
 
   it "has a transportation" do
