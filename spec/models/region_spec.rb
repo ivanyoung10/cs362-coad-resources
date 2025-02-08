@@ -1,8 +1,7 @@
 require 'rails_helper'
 RSpec.describe Region, type: :model do
 
-  let (:region) { Region.new }
-
+  let (:region) { FactoryBot.build(:region) }
 
   describe "attribute tests" do
 
@@ -11,14 +10,7 @@ RSpec.describe Region, type: :model do
     end
 
     it "has a name" do
-      region = Region.new
       expect(region).to respond_to(:name)
-    end
-
-    it "has a string representation that is its name" do
-      name = 'Mt. Hood'
-      region = Region.new(name: name)
-      result = region.to_s
     end
 
     it "has many tickets" do
@@ -46,18 +38,18 @@ RSpec.describe Region, type: :model do
 
   describe "member function tests" do
     
+    # I don't think this should be a factory?
     it "sets name to Unspecified if blank" do
-      region = Region.find_or_create_by(name: 'Unspecified')
-
+      region = Region.unspecified
       expect(region.name).to eq 'Unspecified'
 
     end
 
-    it "sets region to string" do 
-      region2 = Region.new(name: "Heaver")
-      expect(region2.to_s).to eq "Heaver"
+    # the to_s test that was here was redundant with an attribute test,
+    # I think it's closer to being a function test so I moved it down here
+    it "makes name a string" do
+      region = build_stubbed(:region, name: 'Mt Hood')
+      expect(region.to_s).to eq 'Mt Hood'
     end
-
   end
 end
-

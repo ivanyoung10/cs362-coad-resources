@@ -2,8 +2,8 @@
 require 'rails_helper'
 
 RSpec.describe ResourceCategory, type: :model do
+  let (:resCat) { FactoryBot.build(:resource_category) }
 
-  let (:resCat) {ResourceCategory.new(id: 123)}
 
   it "exists" do
     ResourceCategory.new
@@ -66,24 +66,23 @@ RSpec.describe ResourceCategory, type: :model do
     end
   end
 
-
   describe "static function tests" do
     it "creates new unspecified if not already present" do
       result = ResourceCategory.unspecified
       expect(result.name).to eq('Unspecified')
     end
-
+  
     it "returns existing unspecified" do
-      existing_category = ResourceCategory.create!(name: 'Unspecified')
-
+      existing_category = create(:resource_category, :unspecified)
+  
       result = ResourceCategory.unspecified
       expect(result).to eq(existing_category)
     end
-
+  
     it "does not create duplicates" do
       ResourceCategory.unspecified
       ResourceCategory.unspecified
-
+  
       expect(ResourceCategory.where(name: 'Unspecified').count).to eq(1)
     end
   end
@@ -91,21 +90,15 @@ RSpec.describe ResourceCategory, type: :model do
 
   describe "scope tests" do
     it "checks active scope" do
-      resource_cat = ResourceCategory.create!(
-        name: "resource category 1",
-        active: true
-      )
+      resource_cat = create(:resource_category, active: true)
 
       expect(ResourceCategory.active).to include(resource_cat)
       expect(ResourceCategory.inactive).to_not include(resource_cat)
     end
 
     it "checks inactive scope" do
-      resource_cat = ResourceCategory.create!(
-        name: "resource category 1",
-        active: false
-      )
-
+      resource_cat = create(:resource_category, active: false)
+    
       expect(ResourceCategory.active).to_not include(resource_cat)
       expect(ResourceCategory.inactive).to include(resource_cat)
     end

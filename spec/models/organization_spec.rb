@@ -3,7 +3,8 @@ require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
 
-  let (:org) { Organization.new}
+  # let (:org) { Organization.new}
+  let (:org) { FactoryBot.build(:organization) }
 
   it "exists" do
     Organization.new
@@ -135,6 +136,4 @@ RSpec.describe Organization, type: :model do
       expect(org.to_s).to eq org.name
     end
   end
-  
-
 end

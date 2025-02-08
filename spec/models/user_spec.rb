@@ -1,5 +1,5 @@
 require 'rails_helper'
-#Mine
+
 RSpec.describe User, type: :model do
 
   let (:user) {User.new}
