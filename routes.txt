@@ -1,0 +1,70 @@
+                            Prefix Verb   URI Pattern                                                                              Controller#Action
+                              root GET    /                                                                                        static_pages#index
+                           tickets POST   /tickets(.:format)                                                                       tickets#create
+                        new_ticket GET    /tickets/new(.:format)                                                                   tickets#new
+                            ticket GET    /tickets/:id(.:format)                                                                   tickets#show
+                  ticket_submitted GET    /ticket_submitted(.:format)                                                              static_pages#ticket_submitted
+         organization_expectations GET    /organization_expectations(.:format)                                                     static_pages#organization_expectations
+                    capture_ticket POST   /tickets/:id/capture(.:format)                                                           tickets#capture
+                    release_ticket POST   /tickets/:id/release(.:format)                                                           tickets#release
+                      close_ticket PATCH  /tickets/:id/close(.:format)                                                             tickets#close
+                             login GET    /login(.:format)                                                                         users/sessions#new
+                            logout DELETE /logout(.:format)                                                                        users/sessions#destroy
+                            signup GET    /signup(.:format)                                                                        users/registrations#new
+                      edit_profile GET    /edit_profile(.:format)                                                                  users/registrations#edit
+                  new_user_session GET    /users/sign_in(.:format)                                                                 devise/sessions#new
+                      user_session POST   /users/sign_in(.:format)                                                                 devise/sessions#create
+              destroy_user_session DELETE /users/sign_out(.:format)                                                                devise/sessions#destroy
+                 new_user_password GET    /users/password/new(.:format)                                                            devise/passwords#new
+                edit_user_password GET    /users/password/edit(.:format)                                                           devise/passwords#edit
+                     user_password PATCH  /users/password(.:format)                                                                devise/passwords#update
+                                   PUT    /users/password(.:format)                                                                devise/passwords#update
+                                   POST   /users/password(.:format)                                                                devise/passwords#create
+          cancel_user_registration GET    /users/cancel(.:format)                                                                  users/registrations#cancel
+             new_user_registration GET    /users/sign_up(.:format)                                                                 users/registrations#new
+            edit_user_registration GET    /users/edit(.:format)                                                                    users/registrations#edit
+                 user_registration PATCH  /users(.:format)                                                                         users/registrations#update
+                                   PUT    /users(.:format)                                                                         users/registrations#update
+                                   DELETE /users(.:format)                                                                         users/registrations#destroy
+                                   POST   /users(.:format)                                                                         users/registrations#create
+             new_user_confirmation GET    /users/confirmation/new(.:format)                                                        devise/confirmations#new
+                 user_confirmation GET    /users/confirmation(.:format)                                                            devise/confirmations#show
+                                   POST   /users/confirmation(.:format)                                                            devise/confirmations#create
+                                   DELETE /tickets/:id(.:format)                                                                   tickets#destroy
+              approve_organization POST   /organizations/:id/approve(.:format)                                                     organizations#approve
+               reject_organization POST   /organizations/:id/reject(.:format)                                                      organizations#reject
+            resources_organization GET    /organizations/:id/resources(.:format)                                                   organizations#resources
+                     organizations GET    /organizations(.:format)                                                                 organizations#index
+                                   POST   /organizations(.:format)                                                                 organizations#create
+                  new_organization GET    /organizations/new(.:format)                                                             organizations#new
+                 edit_organization GET    /organizations/:id/edit(.:format)                                                        organizations#edit
+                      organization GET    /organizations/:id(.:format)                                                             organizations#show
+                                   PATCH  /organizations/:id(.:format)                                                             organizations#update
+                                   PUT    /organizations/:id(.:format)                                                             organizations#update
+                                   DELETE /organizations/:id(.:format)                                                             organizations#destroy
+        activate_resource_category PATCH  /resource_categories/:id/activate(.:format)                                              resource_categories#activate
+      deactivate_resource_category PATCH  /resource_categories/:id/deactivate(.:format)                                            resource_categories#deactivate
+               resource_categories GET    /resource_categories(.:format)                                                           resource_categories#index
+                                   POST   /resource_categories(.:format)                                                           resource_categories#create
+             new_resource_category GET    /resource_categories/new(.:format)                                                       resource_categories#new
+            edit_resource_category GET    /resource_categories/:id/edit(.:format)                                                  resource_categories#edit
+                 resource_category GET    /resource_categories/:id(.:format)                                                       resource_categories#show
+                                   PATCH  /resource_categories/:id(.:format)                                                       resource_categories#update
+                                   PUT    /resource_categories/:id(.:format)                                                       resource_categories#update
+                                   DELETE /resource_categories/:id(.:format)                                                       resource_categories#destroy
+                           regions GET    /regions(.:format)                                                                       regions#index
+                                   POST   /regions(.:format)                                                                       regions#create
+                        new_region GET    /regions/new(.:format)                                                                   regions#new
+                       edit_region GET    /regions/:id/edit(.:format)                                                              regions#edit
+                            region GET    /regions/:id(.:format)                                                                   regions#show
+                                   PATCH  /regions/:id(.:format)                                                                   regions#update
+                                   PUT    /regions/:id(.:format)                                                                   regions#update
+                                   DELETE /regions/:id(.:format)                                                                   regions#destroy
+                         dashboard GET    /dashboard(.:format)                                                                     dashboard#index
+      new_organization_application GET    /new_organization_application(.:format)                                                  organizations#new
+organization_application_submitted GET    /organization_application_submitted(.:format)                                            static_pages#organization_application_submitted
+                rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
+         rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
+                rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
+         update_rails_disk_service PUT    /rails/active_storage/disk/:encoded_token(.:format)                                      active_storage/disk#update
+              rails_direct_uploads POST   /rails/active_storage/direct_uploads(.:format)                                           active_storage/direct_uploads#create
