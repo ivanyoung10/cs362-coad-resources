@@ -6,6 +6,14 @@ FactoryBot.define do
     primary_name { "Name Nameson" }
     secondary_name { "Name Nameson Jr. The Fifth" }
     secondary_phone { "+2-222-222-2222" }
-    status { "submitted" }
+    status { :submitted }
+
+    trait :organization_approved do 
+      status { :approved }
+    end
+
+    trait :organization_rejected do 
+      status { :rejected }
+    end
   end
 end

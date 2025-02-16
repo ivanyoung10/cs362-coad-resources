@@ -10,9 +10,9 @@ require 'rails_helper'
 # GET          /organizations/new(.:format)                   organizations#new -- DONE
 # GET          /organizations/:id/edit(.:format)              organizations#edit -- N/A
 # GET          /organizations/:id(.:format)                   organizations#show -- N/A
-# PATCH        /organizations/:id(.:format)                   organizations#update
-# PUT          /organizations/:id(.:format)                   organizations#update
-# DELETE       /organizations/:id(.:format)                   organizations#destroy
+# PATCH        /organizations/:id(.:format)                   organizations#update -- INCOMPLETE
+# PUT          /organizations/:id(.:format)                   organizations#update -- INCOMPLETE
+# DELETE       /organizations/:id(.:format)                   organizations#destroy -- NOT IN ORG_CTRL?
 
 RSpec.describe OrganizationsController, type: :controller do
   describe 'logged out user' do
@@ -57,12 +57,13 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(get(:new)).to redirect_to new_user_session_path
     end
 
+    # setup may be wrong
     it "tests update PUTS" do
       new_name = { name: "Updated Org Name" }
     
       put :update, params: { id: organization.id, organization: new_name }
       organization.reload
-    
+      
       expect(response).to redirect_to new_user_session_path
     end
   end
@@ -72,8 +73,7 @@ RSpec.describe OrganizationsController, type: :controller do
   describe 'logged in user' do
     let(:organization) { FactoryBot.create(:organization) }
     let(:user) { create(:user) }
-    let(:approved_organization) { create(:organization, status: :approved) }
-    let(:org_user) { create(:user, organization: organization) }
+    
     before(:each) { sign_in user }
     
     it "tests approve" do
@@ -116,7 +116,11 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(get(:new)).to be_successful
     end
 
+    # EXPECTS DASHBOARD, which is wrong I think, so test fails
     # it "tests update PUTS" do
+    #   region = FactoryBot.create(:region)
+    #   approved_organization = FactoryBot.create(:organization, :organization_approved)
+
     #   new_name = { name: "Updated Org Name" }
     
     #   put :update, params: { id: approved_organization.id, approved_organization: new_name }
@@ -181,9 +185,8 @@ RSpec.describe OrganizationsController, type: :controller do
       put :update, params: { id: organization.id, organization: new_name }
       organization.reload
     
+      # I don't think this is correct
       expect(response).to redirect_to dashboard_path
     end
-    
-
   end
 end
