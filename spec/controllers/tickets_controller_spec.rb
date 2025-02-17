@@ -1,7 +1,7 @@
 require 'rails_helper'
 # POST   /tickets(.:format)                                                                       tickets#create  --DONE
 # GET    /tickets/new(.:format)                                                                   tickets#new --DONE
-# GET    /tickets/:id(.:format)                                                                   tickets#show
+# GET    /tickets/:id(.:format)                                                                   tickets#show --DONE
 # GET    /ticket_submitted(.:format)                                                              static_pages#ticket_submitted
 # GET    /organization_expectations(.:format)                                                     static_pages#organization_expectations
 # POST   /tickets/:id/capture(.:format)                                                           tickets#capture
@@ -20,6 +20,7 @@ RSpec.describe TicketsController, type: :controller do
       post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })
       expect(response).to be_successful
     }
+
   end
 
   describe 'as a logged in user' do
@@ -29,14 +30,18 @@ RSpec.describe TicketsController, type: :controller do
 
     it { expect(get(:new)).to be_successful }
 
-    # it {
-    #   get :show, params: { id: ticket.id }
-    #   expect(response).to redirect_to dashboard_path
-    # }
-
     it {
       post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })
       expect(response).to be_successful
+    }
+
+    it { 
+        region = FactoryBot.create(:region)
+        resource_category = FactoryBot.create(:resource_category)
+        ticket = FactoryBot.create(:ticket, region: region, resource_category: resource_category)
+
+        get :show, params: { id: ticket.id }
+        expect(response).to redirect_to dashboard_path
     }
   end
 
@@ -52,9 +57,13 @@ RSpec.describe TicketsController, type: :controller do
       expect(response).to be_successful
     }
 
-    # it {
-    #   get :show, params: { id: ticket.id }
-    #   expect(response).to be_successful
-    # }
+    it { 
+        region = FactoryBot.create(:region)
+        resource_category = FactoryBot.create(:resource_category)
+        ticket = FactoryBot.create(:ticket, region: region, resource_category: resource_category)
+
+        get :show, params: { id: ticket.id }
+        expect(response).to be_successful
+    }
   end
 end
