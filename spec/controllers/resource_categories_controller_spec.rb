@@ -6,12 +6,12 @@ require 'rails_helper'
 #  PATCH    /resource_categories/:id/deactivate(.:format)             resource_categories#deactivate
 #  GET      /resource_categories(.:format)                            resource_categories#index --DONE
 #  POST     /resource_categories(.:format)                            resource_categories#create --DONE
-#  GET      /resource_categories/new(.:format)                        resource_categories#new 
-#  GET      /resource_categories/:id/edit(.:format)                   resource_categories#edit
+#  GET      /resource_categories/new(.:format)                        resource_categories#new --Done
+#  GET      /resource_categories/:id/edit(.:format)                   resource_categories#edit --Done
 #  GET      /resource_categories/:id(.:format)                        resource_categories#show
 #  PATCH    /resource_categories/:id(.:format)                        resource_categories#update
 #  PUT      /resource_categories/:id(.:format)                        resource_categories#update
-#  DELETE / resource_categories/:id(.:format)                        resource_categories#destroy
+#  DELETE   /resource_categories/:id(.:format)                        resource_categories#destroy
 
 RSpec.describe ResourceCategoriesController, type: :controller do
   describe 'as a logged out user' do
@@ -20,10 +20,19 @@ RSpec.describe ResourceCategoriesController, type: :controller do
 
     it { expect(get(:index)).to redirect_to new_user_session_path }
     it { expect(get(:new)).to redirect_to new_user_session_path }
+    # it { get :show, params: { id: ticket.id }
+    #     expect(response).to redirect_to new_user_session_path
+    # }
     it {
       post(:create, params: { resource_category: FactoryBot.attributes_for(:resource_category) })
       expect(response).to redirect_to new_user_session_path
     }
+
+    it { 
+      edit_rc = FactoryBot.create(:resource_category)
+      expect(get(:edit, params: { id: edit_rc.id })).to redirect_to new_user_session_path
+    }
+
   end
 
   describe 'as a logged in user' do
@@ -39,6 +48,11 @@ RSpec.describe ResourceCategoriesController, type: :controller do
       post(:create, params: { resource_category: FactoryBot.attributes_for(:resource_category) })
       expect(response).to redirect_to dashboard_path
     }
+
+    it { 
+      edit_rc = FactoryBot.create(:resource_category)
+      expect(get(:edit, params: { id: edit_rc.id })).to redirect_to dashboard_path
+    }
   end
 
   describe 'as an admin' do
@@ -51,6 +65,10 @@ RSpec.describe ResourceCategoriesController, type: :controller do
     it {
       post(:create, params: { resource_category: FactoryBot.attributes_for(:resource_category) })
       expect(response).to redirect_to resource_categories_path
+    }
+    it { 
+      edit_rc = FactoryBot.create(:resource_category)
+      expect(get(:edit, params: { id: edit_rc.id })).to be_successful
     }
   end
 end

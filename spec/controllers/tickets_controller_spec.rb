@@ -10,15 +10,11 @@ require 'rails_helper'
 
 RSpec.describe TicketsController, type: :controller do
   describe 'as a logged out user' do
-    let (:ticket) { FactoryBot.create(:tic)}
+    let (:ticket) {FactoryBot.create(:ticket)}
     let(:user) { create(:user) }
+    
 
     it { expect(get(:new)).to be_successful }
-
-    # it {
-    #   get :show, params: { id: ticket.id }
-    #   expect(response).to redirect_to new_user_session_path
-    # }
 
     it {
       post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })
