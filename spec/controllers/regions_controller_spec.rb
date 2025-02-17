@@ -23,8 +23,6 @@ RSpec.describe RegionsController, type: :controller do
     }
     it { expect(get(:new)).to redirect_to new_user_session_path }
 
-    it { expect(get(:new)).to redirect_to new_user_session_path }
-
     it { 
       edit_region = FactoryBot.create(:region)
       expect(get(:edit, params: { id: edit_region.id })).to redirect_to new_user_session_path
@@ -80,7 +78,6 @@ RSpec.describe RegionsController, type: :controller do
       post(:create, params: { region: FactoryBot.attributes_for(:region) })
       expect(response).to redirect_to dashboard_path
     }
-    it { expect(get(:new)).to redirect_to dashboard_path }
 
     it { expect(get(:new)).to redirect_to dashboard_path }
 
@@ -134,11 +131,23 @@ RSpec.describe RegionsController, type: :controller do
     before(:each) { sign_in user }
 
     it { expect(get(:index)).to be_successful }
+
     it {
       post(:create, params: { region: FactoryBot.attributes_for(:region) })
       expect(response).to redirect_to regions_path
     }
-    it { expect(get(:new)).to be_successful }
+
+    it {
+      # allow_any_instance_of(Region).to receive(:save).and_return(false) # bad, but effective
+
+      # the better way
+      region = build(:region)
+      allow(Region).to receive(:new).and_return(region)
+      allow(region).to receive(:save).and_return(false)
+
+      post(:create, params: { region: FactoryBot.attributes_for(:region) })
+      expect(response).to be_successful
+    }
 
     it { expect(get(:new)).to be_successful }
 
