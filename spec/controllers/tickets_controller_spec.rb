@@ -2,11 +2,11 @@ require 'rails_helper'
 # POST   /tickets(.:format)                                                                       tickets#create  --DONE
 # GET    /tickets/new(.:format)                                                                   tickets#new --DONE
 # GET    /tickets/:id(.:format)                                                                   tickets#show --DONE
-# GET    /ticket_submitted(.:format)                                                              static_pages#ticket_submitted
-# GET    /organization_expectations(.:format)                                                     static_pages#organization_expectations
+# GET    /ticket_submitted(.:format)                                                              static_pages#ticket_submitted -- N/A
+# GET    /organization_expectations(.:format)                                                     static_pages#organization_expectations -- N/A
 # POST   /tickets/:id/capture(.:format)                                                           tickets#capture
 # POST   /tickets/:id/release(.:format)                                                           tickets#release
-# PATCH  /tickets/:id/close(.:format)                                                             tickets#close
+# PATCH  /tickets/:id/close(.:format)                                                             tickets#close --DONE
 
 RSpec.describe TicketsController, type: :controller do
   describe 'as a logged out user' do
@@ -20,6 +20,7 @@ RSpec.describe TicketsController, type: :controller do
       post(:create, params: { ticket: FactoryBot.attributes_for(:ticket) })
       expect(response).to be_successful
     }
+
 
   end
 
@@ -43,6 +44,22 @@ RSpec.describe TicketsController, type: :controller do
         get :show, params: { id: ticket.id }
         expect(response).to redirect_to dashboard_path
     }
+
+    it {
+      region = FactoryBot.create(:region)
+      resource_category = FactoryBot.create(:resource_category)
+      ticket = FactoryBot.create(:ticket, region: region, resource_category: resource_category)
+      patch :close, params: { id: ticket.id}
+    
+      expect(response).to redirect_to dashboard_path
+    } 
+
+    it {
+      post(:capture, params: { ticket: FactoryBot.attributes_for(:ticket) })
+      expect(response).to redirect_to dashboard_path
+    }
+
+    
   end
 
   describe 'as an admin' do
@@ -65,5 +82,16 @@ RSpec.describe TicketsController, type: :controller do
         get :show, params: { id: ticket.id }
         expect(response).to be_successful
     }
+
+    it {
+      region = FactoryBot.create(:region)
+      resource_category = FactoryBot.create(:resource_category)
+      ticket = FactoryBot.create(:ticket, region: region, resource_category: resource_category)
+      patch :close, params: { id: ticket.id}
+    
+      expect(response).to redirect_to dashboard_path << '#tickets:open'
+  }
   end
+
+  
 end
