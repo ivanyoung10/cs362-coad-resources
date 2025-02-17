@@ -10,8 +10,8 @@ require 'rails_helper'
 # GET          /organizations/new(.:format)                   organizations#new -- DONE
 # GET          /organizations/:id/edit(.:format)              organizations#edit -- N/A
 # GET          /organizations/:id(.:format)                   organizations#show -- N/A
-# PATCH        /organizations/:id(.:format)                   organizations#update -- INCOMPLETE
-# PUT          /organizations/:id(.:format)                   organizations#update -- INCOMPLETE
+# PATCH        /organizations/:id(.:format)                   organizations#update -- DONE
+# PUT          /organizations/:id(.:format)                   organizations#update -- DONE
 # DELETE       /organizations/:id(.:format)                   organizations#destroy -- NOT IN ORG_CTRL?
 
 RSpec.describe OrganizationsController, type: :controller do
@@ -57,14 +57,30 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(get(:new)).to redirect_to new_user_session_path
     end
 
-    # setup may be wrong
     it "tests update PUTS" do
+      approved_user = FactoryBot.create(:user, :organization_approved)
+
+      approved_organization = FactoryBot.create(:organization, :organization_approved)
+
       new_name = { name: "Updated Org Name" }
     
-      put :update, params: { id: organization.id, organization: new_name }
-      organization.reload
-      
-      expect(response).to redirect_to new_user_session_path
+      put :update, params: { id: approved_organization.id, organization: new_name }
+      approved_organization.reload
+    
+      expect(approved_organization.name).to redirect_to new_user_session_path
+    end
+
+    it "tests update PATCH" do
+      approved_user = FactoryBot.create(:user, :organization_approved)
+
+      approved_organization = FactoryBot.create(:organization, :organization_approved)
+
+      new_name = { name: "Updated Org Name" }
+    
+      patch :update, params: { id: approved_organization.id, organization: new_name }
+      approved_organization.reload
+    
+      expect(approved_organization.name).to redirect_to new_user_session_path
     end
   end
 
@@ -103,8 +119,16 @@ RSpec.describe OrganizationsController, type: :controller do
     end
 
     it "tests create" do
-      # admin to recieve email, but no idea how to test if email actually gets sent
       admin = FactoryBot.create(:user, :admin)
+
+      # region = build(:region)
+      # allow(Region).to receive(:new).and_return(region)
+      # allow(region).to receive(:save).and_return(false) 
+
+      # admin = build(:user, :admin)
+      # organization = build(:organization)
+      # allow(UserMailer).to receive(:with).and_return(admin)
+      # allow(UserMailer).to receive(:new_organization_application).and_return(organization)
     
       post :create, params: { organization: FactoryBot.attributes_for(:organization),
                               user: FactoryBot.attributes_for(:user, :organization_unapproved) }
@@ -116,19 +140,35 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(get(:new)).to be_successful
     end
 
-    # EXPECTS DASHBOARD, which is wrong I think, so test fails
-    # it "tests update PUTS" do
-    #   region = FactoryBot.create(:region)
-    #   approved_organization = FactoryBot.create(:organization, :organization_approved)
+    it "tests update PUTS" do
+      approved_user = FactoryBot.create(:user, :organization_approved)
+      sign_in approved_user
 
-    #   new_name = { name: "Updated Org Name" }
+      approved_organization = FactoryBot.create(:organization, :organization_approved)
+
+      new_name = { name: "Updated Org Name" }
     
-    #   put :update, params: { id: approved_organization.id, approved_organization: new_name }
-    #   approved_organization.reload
+      put :update, params: { id: approved_organization.id, organization: new_name }
+      approved_organization.reload
     
-    #   expect(approved_organization.name).to eq("Updated Org Name")
-    #   expect(response).to redirect_to organization_path(approved_organization.id)
-    # end
+      expect(approved_organization.name).to eq("Updated Org Name")
+      expect(response).to redirect_to organization_path(approved_organization.id)
+    end
+
+    it "tests update PATCH" do
+      approved_user = FactoryBot.create(:user, :organization_approved)
+      sign_in approved_user
+
+      approved_organization = FactoryBot.create(:organization, :organization_approved)
+
+      new_name = { name: "Updated Org Name" }
+    
+      patch :update, params: { id: approved_organization.id, organization: new_name }
+      approved_organization.reload
+    
+      expect(approved_organization.name).to eq("Updated Org Name")
+      expect(response).to redirect_to organization_path(approved_organization.id)
+    end
   end
 
   #### =============================================================================================== ####
@@ -180,13 +220,33 @@ RSpec.describe OrganizationsController, type: :controller do
     end
 
     it "tests update PUTS" do
+      approved_user = FactoryBot.create(:user, :admin, :organization_approved)
+      sign_in approved_user
+
+      approved_organization = FactoryBot.create(:organization, :organization_approved)
+
       new_name = { name: "Updated Org Name" }
     
-      put :update, params: { id: organization.id, organization: new_name }
-      organization.reload
+      put :update, params: { id: approved_organization.id, organization: new_name }
+      approved_organization.reload
     
-      # I don't think this is correct
-      expect(response).to redirect_to dashboard_path
+      expect(approved_organization.name).to eq("Updated Org Name")
+      expect(response).to redirect_to organization_path(approved_organization.id)
+    end
+
+    it "tests update PATCH" do
+      approved_user = FactoryBot.create(:user, :admin, :organization_approved)
+      sign_in approved_user
+
+      approved_organization = FactoryBot.create(:organization, :organization_approved)
+
+      new_name = { name: "Updated Org Name" }
+    
+      patch :update, params: { id: approved_organization.id, organization: new_name }
+      approved_organization.reload
+    
+      expect(approved_organization.name).to eq("Updated Org Name")
+      expect(response).to redirect_to organization_path(approved_organization.id)
     end
   end
 end
