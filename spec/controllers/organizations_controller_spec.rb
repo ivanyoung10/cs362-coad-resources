@@ -118,18 +118,33 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(get(:index)).to be_successful
     end
 
-    it "tests create" do
-      admin = FactoryBot.create(:user, :admin)
-
-      # region = build(:region)
-      # allow(Region).to receive(:new).and_return(region)
-      # allow(region).to receive(:save).and_return(false) 
+    it "tests create FALSE" do
+      # admin = FactoryBot.create(:user, :admin)
 
       # admin = build(:user, :admin)
       # organization = build(:organization)
-      # allow(UserMailer).to receive(:with).and_return(admin)
+      admin = double()
+      allow(admin).to receive(:new_organization_application).and_return(false)
+
+      allow(UserMailer).to receive(:with).and_return(admin)
+
       # allow(UserMailer).to receive(:new_organization_application).and_return(organization)
     
+      post :create, params: { organization: FactoryBot.attributes_for(:organization),
+                              user: FactoryBot.attributes_for(:user, :organization_unapproved) }
+    
+      expect(response).to redirect_to organization_application_submitted_path
+    end
+
+    it "tests create 'TRUE'" do
+      deliver_now_double = double()
+      allow(deliver_now_double).to receive(:deliver_now)
+
+      admin = double()
+      allow(admin).to receive(:new_organization_application).and_return(deliver_now_double)
+
+      allow(UserMailer).to receive(:with).and_return(admin)
+
       post :create, params: { organization: FactoryBot.attributes_for(:organization),
                               user: FactoryBot.attributes_for(:user, :organization_unapproved) }
     
