@@ -58,6 +58,17 @@ RSpec.describe RegionsController, type: :controller do
       expect(response).to redirect_to new_user_session_path
     end
 
+    it "tests update fail state PUTS" do
+      region = FactoryBot.create(:region)
+      new_name = { name: "Updated Region Name" }
+
+      allow_any_instance_of(Region).to receive(:update).and_return(false)
+
+      put :update, params: { id: region.id, region: new_name }
+
+      expect(response).to redirect_to new_user_session_path
+    end
+
     it "tests update PATCH" do
       region = FactoryBot.create(:region)
       new_name = { name: "Updated Region Name" }
@@ -65,6 +76,17 @@ RSpec.describe RegionsController, type: :controller do
       patch :update, params: { id: region.id, region: new_name }
       region.reload
     
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    it "tests update fail state PATCH" do
+      region = FactoryBot.create(:region)
+      new_name = { name: "Updated Region Name" }
+
+      allow_any_instance_of(Region).to receive(:update).and_return(false)
+
+      patch :update, params: { id: region.id, region: new_name }
+
       expect(response).to redirect_to new_user_session_path
     end
 
@@ -126,6 +148,17 @@ RSpec.describe RegionsController, type: :controller do
       expect(response).to redirect_to dashboard_path
     end
 
+    it "tests update fail state PUTS" do
+      region = FactoryBot.create(:region)
+      new_name = { name: "Updated Region Name" }
+
+      allow_any_instance_of(Region).to receive(:update).and_return(false)
+
+      put :update, params: { id: region.id, region: new_name }
+
+      expect(response).to redirect_to dashboard_path
+    end
+
     it "tests update PATCH" do
       region = FactoryBot.create(:region)
       new_name = { name: "Updated Region Name" }
@@ -133,6 +166,17 @@ RSpec.describe RegionsController, type: :controller do
       patch :update, params: { id: region.id, region: new_name }
       region.reload
     
+      expect(response).to redirect_to dashboard_path
+    end
+
+    it "tests update fail state PATCH" do
+      region = FactoryBot.create(:region)
+      new_name = { name: "Updated Region Name" }
+
+      allow_any_instance_of(Region).to receive(:update).and_return(false)
+
+      patch :update, params: { id: region.id, region: new_name }
+
       expect(response).to redirect_to dashboard_path
     end
 
@@ -198,6 +242,17 @@ RSpec.describe RegionsController, type: :controller do
       expect(response).to redirect_to region
     end
 
+    it "tests update fail state PUTS" do
+      region = FactoryBot.create(:region)
+      new_name = { name: "Updated Region Name" }
+
+      allow_any_instance_of(Region).to receive(:update).and_return(false)
+
+      put :update, params: { id: region.id, region: new_name }
+
+      expect(response).to be_successful
+    end
+
     it "tests update PATCH" do
       region = FactoryBot.create(:region)
       new_name = { name: "Updated Region Name" }
@@ -207,6 +262,17 @@ RSpec.describe RegionsController, type: :controller do
     
       expect(region.name).to eq("Updated Region Name")
       expect(response).to redirect_to region
+    end
+
+    it "tests update fail state PATCH" do
+      region = FactoryBot.create(:region)
+      new_name = { name: "Updated Region Name" }
+
+      allow_any_instance_of(Region).to receive(:update).and_return(false)
+
+      patch :update, params: { id: region.id, region: new_name }
+
+      expect(response).to be_successful
     end
 
     it "tests destroy" do
