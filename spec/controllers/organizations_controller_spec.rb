@@ -284,25 +284,15 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(response).to redirect_to organizations_path
     end
 
-    # I have truly no idea why this fails, and the error makes me think something is wrong in the actual controller
-    # The error:
-    # OrganizationsController as an admin user tests approve fail state
-    # Failure/Error: render organization_path(id: @organization.id)
+    # I have no idea why this fails, and the error makes me think something is wrong in the actual controller
 
-    # ActionView::MissingTemplate:
-    #   Missing template organizations/1 with {:locale=>[:en], :formats=>[:html], :variants=>[], :handlers=>[:raw, :erb, :html, :builder, :ruby, :coffee, :haml, :jbuilder]}. Searched in:
-    #     * "#<RSpec::Rails::ViewRendering::EmptyTemplateResolver::ResolverDecorator:0x000055c05e316d10>"
-    #     * "#<RSpec::Rails::ViewRendering::EmptyTemplateResolver::ResolverDecorator:0x000055c05e316c98>"
-    # # ./app/controllers/organizations_controller.rb:53:in `approve'
-    # # ./spec/controllers/organizations_controller_spec.rb:290:in `block (3 levels) in <top (required)>'
-
-    # it "tests approve fail state" do
-    #   allow_any_instance_of(Organization).to receive(:save).and_return(false)
+    it "tests approve fail state" do
+      allow_any_instance_of(Organization).to receive(:save).and_return(false)
     
-    #   post :approve, params: { id: organization.id }
+      post :approve, params: { id: organization.id }
     
-    #   expect(response).to be_successful
-    # end
+      expect(response).to redirect_to organization_path(organization.id)
+    end
 
     it "tests reject" do
       rejection_reason = "Bad Vibes"
@@ -316,15 +306,15 @@ RSpec.describe OrganizationsController, type: :controller do
     end
 
     # See comment directly above this
-    # it "tests reject fail state" do    
-    #   rejection_reason = "Bad Vibes"
+    it "tests reject fail state" do    
+      rejection_reason = "Bad Vibes"
 
-    #   allow_any_instance_of(Organization).to receive(:save).and_return(false)
+      allow_any_instance_of(Organization).to receive(:save).and_return(false)
 
-    #   post :reject, params: { id: organization.id, organization: { rejection_reason: rejection_reason } }
+      post :reject, params: { id: organization.id, organization: { rejection_reason: rejection_reason } }
 
-    #   expect(response).to be_successful
-    # end
+      expect(response).to redirect_to organization_path(organization.id)
+    end
 
     # feel like this should redirect to dashboard going off all the before_actions
     # not sure I understand those fully

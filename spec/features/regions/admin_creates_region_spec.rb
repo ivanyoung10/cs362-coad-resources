@@ -5,6 +5,7 @@ RSpec.describe 'Creating a Region', type: :feature do
     @region = create(:region)
     @user = create(:user, :admin)
   end
+
   it 'it can be created from the home screen' do
     visit root_path
 
@@ -18,7 +19,6 @@ RSpec.describe 'Creating a Region', type: :feature do
 
     expect(current_path).to eq regions_path
 
+    expect(page.body).to have_text('Test Name')
   end
-
-
 end
