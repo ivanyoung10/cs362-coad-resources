@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Updating an Organization', type: :feature do
   before do
-    @organization = create(:organization)
+    @organization = create(:organization, :organization_approved)
     @user = create(:user, :organization_approved)
   end
 
@@ -12,18 +12,16 @@ RSpec.describe 'Updating an Organization', type: :feature do
     log_in_as(@user)
 
     click_on 'Edit Organization'
+
+    # puts page.html
+
+    fill_in 'Name', with: 'coolest org ever'
+    fill_in 'Phone', with: '111-666-7777'
+    fill_in 'Email', with: 'email@example.com'
+    fill_in 'Description', with: 'we are SO COOL'
+
+    click_on 'commit'
     
-    fill_in 'Name', with: 'Cool Org'
-    fill_in 'Phone', with: '+1-111-111-1234'
-    # can't fill in because it's a number counter?????
-    # fill_in 'Email', with: 'exemplary@example.com'
-    fill_in 'Description', with: 'The coolest org around'
-
-    click_on 'Update Resource'
-
-    # the update code doesn't work
-    # but this is where the tests would go
-    # neither the website nor db entry for
-    # a signed in org actually get updated
+    expect(page.body).to have_text('coolest org ever')
   end
 end

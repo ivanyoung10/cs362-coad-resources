@@ -2,7 +2,14 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
   # https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise
-  prepend_before_action :check_captcha, only: [:create]
+  # prepend_before_action :check_captcha, only: [:create]
+
+  def create
+    super do |resource|
+      resource.skip_confirmation!
+      resource.save
+    end
+  end
 
   private
 
