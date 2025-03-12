@@ -40,5 +40,7 @@ Rails.application.routes.draw do
     get '/dashboard' => 'dashboard#index'
     get '/new_organization_application' => 'organizations#new'
     get '/organization_application_submitted' => 'static_pages#organization_application_submitted'
+
+    get '/users', to: 'users#index', as: 'admin'
   end
 end
